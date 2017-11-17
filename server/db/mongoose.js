@@ -13,6 +13,6 @@ var options = {
 var url = 'mongodb://localhost:27017/TodoApp';
 
 mongoose.Promise = global.Promise;
-mongoose.connect(url, options);
+mongoose.connect(process.env.MONGODB_URI || url, options);
 
 module.exports = {mongoose};

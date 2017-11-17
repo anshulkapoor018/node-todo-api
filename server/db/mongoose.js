@@ -10,9 +10,8 @@ var options = {
   bufferMaxEntries: 0
 }
 
-var url = 'mongodb://localhost:27017/TodoApp';
 
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGODB_URI || url, options);
+mongoose.connect(process.env.MONGODB_URI, options);
 
 module.exports = {mongoose};

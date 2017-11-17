@@ -1,63 +1,44 @@
-var mongoose = require('mongoose');
+var express = require('express');
+var bodyParser = require('body-parser');
 
-var options = {
-  useMongoClient: true,
-  autoIndex: false, // Don't build indexes
-  reconnectTries: Number.MAX_VALUE, // Never stop trying to reconnect
-  reconnectInterval: 500, // Reconnect every 500ms
-  poolSize: 10, // Maintain up to 10 socket connections
-  // If not connected, return errors immediately rather than waiting for reconnect
-  bufferMaxEntries: 0
-}
+var {mongoose} = require('./db/mongoose');
+var {Todo} = require('./models/todo');
+var {User} = require('./models/user');
 
-var url = 'mongodb://localhost:27017/TodoApp';
+var app = express();
 
-mongoose.Promise = global.Promise;
-mongoose.connect(url, options);
+app.use(bodyParser.json())
 
-//Setting up a mongoose model
-var Todo = mongoose.model('Todo', {
-  text: {
-    type: String,
-    required : true,
-    minlength: 1,
-    trim: true
-  },
-  completed: {
-    type: Boolean,
-    default: false
-  },
-  completedAt: {
-    type: Number,
-    default: null
-  }
-});
-//
-// var newTodo = new Todo({
-//   text: 'run a marathon',
-// });
-//
-// newTodo.save().then((doc) => {
-//   console.log(JSON.stringify(doc, undefined, 2));
-// }, (err) => {
-//   console.log('Unable to save Todo.', err);
-// });
+app.post('/todos', (req, res) => {
+  var todo = new Todo({
+    text : req.body.text
+  });
 
-var User = mongoose.model('User', {
-  email : {
-    type: String,
-    required: true,
-    trim: true,
-    minlength: 1
-  }
+  todo.save().then((doc) => {
+    res.send(doc);
+  }, (err) => {
+    res.status(400).send(err);
+  })
 });
 
-var newUser = new User({
-  email: 'anshulkapoor018@gmail.com       '
-});
 
-newUser.save().then((doc) => {
-  console.log(JSON.stringify(doc, undefined, 2));
-}, (err) => {
-  console.log('Unable to save User.', err);
-});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+app.listen(3000, () => {
+  console.log('App running on port 3000.');
+})

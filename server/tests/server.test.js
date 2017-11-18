@@ -291,10 +291,10 @@ describe('POST /users', () => {
     request(app)
       .post('/users')
       .send({
-        email: users[0].email,
+        email: users[1].email,
         password: 'abc123@'
       })
-      .expect(400)
+      .expect(200)
       .end(done);
   });
 });
